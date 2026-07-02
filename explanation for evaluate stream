@@ -1,0 +1,13 @@
+1-Load the healthy training segments and the test windows (healthy + damaged).
+2-Group consecutive windows into blocks of size K (e.g., 5 windows per block) to simulate short periods of continuous monitoring.
+3-Interleave healthy and damaged blocks to create a realistic data stream, either uniformly or randomly.
+4-Load the pretrained TS-TCC model and extract context-vector embeddings for both the healthy training data and the streaming test data.
+5-Fit a Mahalanobis model on healthy embeddings to learn the normal operating manifold of the structure.
+6-Compute anomaly scores for each window in the stream and then aggregate them at the block level (using the mean or sum of the scores within each block).
+7-Assign a label to each block using a rule such as:
+        -any: a block is damaged if at least one window is damaged;
+        -majority: a block is damaged if more than half of its windows are damaged.
+8-Determine an anomaly threshold from the healthy training blocks (e.g., mean + 4×std or a high quantile).
+9-Evaluate the online detection performance using block-level metrics such as:
+Confusion Matrix, False Positive Rate (FPR), True Positive Rate (TPR), ROC-AUC, Average Precision (AP).
+10-Visualize the results through confusion matrices and histograms of healthy and damaged block scores.

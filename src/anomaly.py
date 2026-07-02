@@ -275,3 +275,30 @@ def contiguous_block_labels(
     raise ValueError(
         "rule must be 'any' or 'majority'"
     )
+
+def interleave_blocks_random(
+    X_blocks,
+    y_blocks,
+    seed=77,
+):
+    """
+    Randomly shuffle blocks.
+    """
+
+    rng = np.random.default_rng(seed)
+
+    indices = rng.permutation(
+        len(X_blocks)
+    )
+
+    X_blocks = X_blocks[indices]
+    y_blocks = y_blocks[indices]
+
+    X_stream = X_blocks.reshape(
+        -1,
+        X_blocks.shape[2]
+    )
+
+    y_stream = y_blocks.reshape(-1)
+
+    return X_stream, y_stream
